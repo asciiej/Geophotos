@@ -1,0 +1,19 @@
+{
+  "name": "geophotos",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^33.2.1",
+    "exif-parser": "^0.1.12",
+    "fs-extra": "^11.2.0",
+    "sharp": "^0.33.5"
+  }
+}
