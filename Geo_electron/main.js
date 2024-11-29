@@ -64,7 +64,9 @@ ipcMain.handle('process-images', async (event, { inputDir, outputDir }) => {
                         gravity: 'southwest', // Posiciona no canto inferior esquerdo
                     },
                 ])
-                .toFile(outputImagePath);
+                .toFormat('jpeg')
+                .toFile(outputImagePath.replace(/\.\w+$/, '.jpeg'));
+                //.toFile(outputImagePath);
         }
     }
 
