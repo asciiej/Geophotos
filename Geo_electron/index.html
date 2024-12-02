@@ -1,20 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
     <title>Processador de Imagens</title>
+    <link rel="stylesheet" href="./CSS/style.css">
 </head>
 <body>
-    <h1>Processador de Imagens com EXIF</h1>
-    <button id="select-input-folder">Selecionar Pasta de Entrada</button>
-    <p id="input-folder">Nenhuma pasta selecionada</p>
 
-    <button id="select-output-folder">Selecionar Pasta de Saída</button>
-    <p id="output-folder">Nenhuma pasta selecionada</p>
+    <header class="nav-bar">
 
-    <button id="process-images">Processar Imagens</button>
+        <img class="imagem" src = "IMG/logoGeoPhotos.png" alt="Logo GeoPhotos">
+        <h1 class="nome">GeoPhotos</h1>
+
+    </header>
+
+    <section class="container">
+
+        <div class="conteudo">
+
+            <h2 class="titulos" >Processador de Imagens com EXIF</h2>
+
+            <img class="imagemFundo" src="IMG/logoGeoPhotos.png">
+
+            <div class="espaco">
+            <button id="select-input-folder">Selecionar Pasta de Entrada</button>
+            <p id="">Nenhuma pasta selecionada</p>
+
+            <button id="select-output-folder">Selecionar Pasta de Saída</button>
+            <p id="output-folder">Nenhuma pasta selecionada</p>
+
+            <button id="process-images">Processar Imagens</button>
+            </div>
+
+            <h5 class="titulos">Desenvolvido pela ASCII 🐧</h5>
+
+        </div>
+
+    </section>
+
 </body>
 <script src="renderer.js"></script>
 </html>
