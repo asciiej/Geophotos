@@ -10,11 +10,13 @@ let outputFolder = '';
 selectInputFolderBtn.addEventListener('click', async () => {
     inputFolder = await window.electronAPI.selectFolder();
     inputFolderLabel.textContent = inputFolder;
+    inputFolderLabel.classList.add('folder-label'); //criação de classe para alterar a cor para verde
 });
 
 selectOutputFolderBtn.addEventListener('click', async () => {
     outputFolder = await window.electronAPI.selectFolder();
     outputFolderLabel.textContent = outputFolder;
+    outputFolderLabel.classList.add('folder-label'); //criação de classe para alterar a cor para verde
 });
 
 processImagesBtn.addEventListener('click', async () => {
