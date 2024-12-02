@@ -27,4 +27,8 @@
 ├── preload.js      # Comunicação segura entre o processo principal e o frontend
 ├── index.html      # Arquivo da interface do usuário
 ├── package.json    # Configuração e dependências do projeto
+├── CSS    # Pasta para as folhas de estilo
+  └── style.css # Folha de estilo para a aplicação
+├── IMG    # Pasta para a logo da aplicação
+  └── logoGeoPhotos.png # Logo da aplicação
 └── README.md       # Documentação do projeto
