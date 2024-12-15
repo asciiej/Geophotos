@@ -1,8 +1,8 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, Menu } = require('electron');
 const path = require('path');
 const fs = require('fs');
-const sharp = require('sharp');
 const exifParser = require('exif-parser');
+const Jimp = require('jimp');
 
 let mainWindow;
 
@@ -10,10 +10,14 @@ app.on('ready', () => {
     mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
+        icon: path.join(__dirname, 'IMG', 'logoGeoPhotos.png'),
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
         },
     });
+
+    // Remove o menu padrão
+    Menu.setApplicationMenu(null);
 
     mainWindow.loadFile('index.html');
 });
@@ -41,32 +45,35 @@ ipcMain.handle('process-images', async (event, { inputDir, outputDir }) => {
 
             metadataList.push({ file, longitude, latitude });
 
-            const outputImagePath = path.join(outputDir, file);
+            const outputImagePath = path.join(outputDir, file.replace(/\.\w+$/, '.jpeg'));
             const textOverlay = `Longitude: ${longitude.toFixed(5)}, Latitude: ${latitude.toFixed(5)}`;
 
-            // SVG para texto com retângulo de fundo
-            const svgOverlay = `
-                <svg width="2000" height="200">
-                    <!-- Retângulo branco -->
-                    <rect x="0" y="0" width="100%" height="100%" fill="white" opacity="0.8" />
-                    <!-- Texto -->
-                    <text x="10" y="85" font-size="100" fill="black" font-family="Arial" dominant-baseline="middle">
-                        ${textOverlay}
-                    </text>
-                </svg>
-            `;
+            try {
+                const image = await Jimp.read(filePath); // Lê a imagem
+                const font = await Jimp.loadFont(Jimp.FONT_SANS_128_BLACK); // Carrega a fonte
 
-            // Adiciona o overlay à imagem
-            await sharp(filePath)
-                .composite([
-                    {
-                        input: Buffer.from(svgOverlay),
-                        gravity: 'southwest', // Posiciona no canto inferior esquerdo
-                    },
-                ])
-                .toFormat('jpeg')
-                .toFile(outputImagePath.replace(/\.\w+$/, '.jpeg'));
-                //.toFile(outputImagePath);
+                const textWidth = Jimp.measureText(font, textOverlay);
+                const textHeight = Jimp.measureTextHeight(font, textOverlay, textWidth);
+
+                // Adiciona fundo branco para o texto
+                image
+                    .blit(
+                        new Jimp(textWidth + 180, textHeight + 50, 0xffffffff), // Fundo branco
+                        100,
+                        image.bitmap.height - textHeight - 220
+                    )
+                    .print(
+                        font,
+                        180,
+                        image.bitmap.height - textHeight - 180,
+                        textOverlay
+                    );
+
+                // Salva a imagem processada
+                await image.writeAsync(outputImagePath);
+            } catch (error) {
+                console.error(`Erro ao processar a imagem ${file}:`, error);
+            }
         }
     }
 
@@ -79,9 +86,5 @@ ipcMain.handle('process-images', async (event, { inputDir, outputDir }) => {
             .join('\n')
     );
 
-
-
     return metadataList.length;
 });
-
-  
